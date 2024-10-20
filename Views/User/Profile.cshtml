@@ -1,0 +1,24 @@
+@model User
+
+@{
+    ViewData["Title"] = "Perfil del Usuario";
+}
+
+<h2>Perfil de @Model.FullName</h2>
+
+<p><strong>Correo Electrónico:</strong> @Model.Email</p>
+
+<h3>Historial de Reservas</h3>
+@if (Model.Reservations.Any())
+{
+    <ul>
+        @foreach (var reserva in Model.Reservations)
+        {
+            <li>Reserva ID: @reserva.Id - Asiento: @reserva.SeatNumber - Pago Confirmado: @reserva.PaymentConfirmed</li>
+        }
+    </ul>
+}
+else
+{
+    <p>No tiene reservas registradas.</p>
+}

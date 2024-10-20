@@ -1,0 +1,20 @@
+@model Reservation
+
+@{
+    ViewData["Title"] = "Pago de Reserva";
+}
+
+<h2>Pagar Reserva</h2>
+
+<div>
+    <p><strong>Bus:</strong> @Model.BusRoute.BusName</p>
+    <p><strong>Origen:</strong> @Model.BusRoute.Departure</p>
+    <p><strong>Destino:</strong> @Model.BusRoute.Destination</p>
+    <p><strong>Hora de Salida:</strong> @Model.BusRoute.DepartureTime</p>
+    <p><strong>Precio:</strong> @Model.BusRoute.Price.ToString("C")</p>
+</div>
+
+<form asp-action="ConfirmPayment" method="post">
+    <input type="hidden" name="reservationId" value="@Model.Id" />
+    <button type="submit">Confirmar Pago</button>
+</form>

@@ -1,0 +1,64 @@
+# Visual Studio
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Build Folders
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+bin/
+obj/
+out/
+publish/
+
+# NuGet Packages
+*.nupkg
+*.snupkg
+packages/
+*.nupkg
+
+# Logs
+*.log
+logs/
+
+# Environment files
+.env
+*.env
+
+# Temporary files
+*.tmp
+*.bak
+*.swp
+
+# User-specific files
+*.dbmdl
+*.dbproj.schemaview
+
+# Visual Studio Code
+.vscode/
+
+# SQL Server files
+*.mdf
+*.ldf
+*.ndf
+
+# Resharper
+*.DotSettings.user
+
+# Rider
+.idea/
+
+# Visual Studio 2019/2022 specific
+*.sln.ide
+
+# ASP.NET temporary files
+Temporary ASP.NET Files/
+
+# Others
+*.pdb
+*.cache
+*.sitemap

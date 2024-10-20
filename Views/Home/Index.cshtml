@@ -1,0 +1,33 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="home-page">
+    <h1>Bienvenido a Viajes Exprés</h1>
+    <p>Encuentra rutas de buses y reserva tu asiento fácilmente.</p>
+    
+    <div class="search-form">
+        <h2>Busca tu Ruta</h2>
+        <form asp-action="SearchRoutes" asp-controller="Search" method="post">
+            <div class="form-group">
+                <label for="departure">Origen</label>
+                <input type="text" id="departure" name="departure" class="form-control" placeholder="Ciudad de origen" required />
+            </div>
+            <div class="form-group">
+                <label for="destination">Destino</label>
+                <input type="text" id="destination" name="destination" class="form-control" placeholder="Ciudad de destino" required />
+            </div>
+            <div class="form-group">
+                <label for="date">Fecha</label>
+                <input type="date" id="date" name="date" class="form-control" required />
+            </div>
+            <button type="submit" class="btn btn-primary">Buscar</button>
+        </form>
+    </div>
+    
+    <div class="promotions">
+        <h2>Ofertas Especiales</h2>
+        <p>¡Aprovecha nuestras promociones en rutas populares!</p>
+        <!-- Puedes añadir aquí un carrusel o lista de promociones -->
+    </div>
+</div>

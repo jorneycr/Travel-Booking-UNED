@@ -1,0 +1,13 @@
+@model Reservation
+
+@{
+    ViewData["Title"] = "Confirmación de Pago";
+}
+
+<h2>¡Pago Confirmado!</h2>
+
+<p>Su pago ha sido procesado correctamente.</p>
+<p><strong>Reserva:</strong> @Model.Id</p>
+<p><strong>Asiento:</strong> @Model.SeatNumber</p>
+
+<a href="@Url.Action("Profile", "User")">Ver Historial de Reservas</a>

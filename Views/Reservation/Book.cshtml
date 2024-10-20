@@ -1,0 +1,23 @@
+@model BusRoute
+
+@{
+    ViewData["Title"] = "Reservar Asientos";
+}
+
+<h2>Reservar Asientos para @Model.BusName</h2>
+
+<div>
+    <p><strong>Origen:</strong> @Model.Departure</p>
+    <p><strong>Destino:</strong> @Model.Destination</p>
+    <p><strong>Hora de Salida:</strong> @Model.DepartureTime</p>
+    <p><strong>Precio:</strong> @Model.Price.ToString("C")</p>
+</div>
+
+<form asp-action="ConfirmBooking" method="post">
+    <input type="hidden" name="routeId" value="@Model.Id" />
+    <div>
+        <label for="seatNumber">Número de Asiento:</label>
+        <input type="text" name="seatNumber" id="seatNumber" required />
+    </div>
+    <button type="submit">Confirmar Reserva</button>
+</form>

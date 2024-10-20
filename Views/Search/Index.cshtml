@@ -1,0 +1,17 @@
+@{
+    ViewData["Title"] = "Buscar Rutas";
+}
+
+<h2>Buscar Rutas</h2>
+
+<form asp-action="SearchRoutes" method="post">
+    <div>
+        <label for="departure">Origen:</label>
+        <input type="text" name="departure" id="departure" required />
+    </div>
+    <div>
+        <label for="destination">Destino:</label>
+        <input type="text" name="destination" id="destination" required />
+    </div>
+    <button type="submit">Buscar</button>
+</form>
