@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace TravelBookingApp.Migrations
 {
     [DbContext(typeof(TravelContext))]
-    [Migration("20241020205226_InitialCreate")]
+    [Migration("20241021034542_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />

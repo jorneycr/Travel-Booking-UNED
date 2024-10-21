@@ -4,20 +4,39 @@
     ViewData["Title"] = "Registro de Usuario";
 }
 
+@{
+    var successMessage = TempData["SuccessMessage"] as string;
+    var errorMessage = TempData["ErrorMessage"] as string;
+}
+
+@if (!string.IsNullOrEmpty(successMessage))
+{
+    <div class="alert alert-success">
+        <strong>Éxito:</strong> @successMessage
+    </div>
+}
+
+@if (!string.IsNullOrEmpty(errorMessage))
+{
+    <div class="alert alert-danger">
+        <strong>Error:</strong> @errorMessage
+    </div>
+}
+
 <h2>Registro de Usuario</h2>
 
 <form asp-action="Register" method="post">
     <div>
         <label for="FullName">Nombre Completo:</label>
-        <input type="text" name="FullName" required />
+        <input asp-for="FullName" class="form-control" required />
     </div>
     <div>
         <label for="Email">Correo Electrónico:</label>
-        <input type="email" name="Email" required />
+        <input asp-for="Email" type="email" class="form-control" required />
     </div>
     <div>
         <label for="Password">Contraseña:</label>
-        <input type="password" name="Password" required />
+        <input asp-for="Password" type="password" class="form-control" required />
     </div>
-    <button type="submit">Registrar</button>
+    <button type="submit" class="btn btn-primary">Registrar</button>
 </form>

@@ -1,3 +1,7 @@
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container-fluid">
         <a class="navbar-brand" href="/">Viajes Exprés</a>
@@ -9,12 +13,29 @@
                 <li class="nav-item">
                     <a class="nav-link" href="/Search/Index">Buscar Rutas</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/User/Login">Iniciar Sesión</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/User/Register">Registrarse</a>
-                </li>
+            </ul>
+            <ul class="navbar-nav ml-auto">
+                @if (SignInManager.IsSignedIn(User))
+                {
+                    var user = await UserManager.GetUserAsync(User);
+                    <li class="nav-item">
+                        <span class="nav-link">Bienvenido, @user.UserName</span>
+                    </li>
+                    <li class="nav-item">
+                        <form method="post" asp-area="" asp-controller="User" asp-action="Logout">
+                            <button type="submit" class="nav-link btn btn-link">Cerrar Sesión</button>
+                        </form>
+                    </li>
+                }
+                else
+                {
+                    <li class="nav-item">
+                        <a class="nav-link" href="/User/Login">Iniciar Sesión</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/User/Register">Registrarse</a>
+                    </li>
+                }
             </ul>
         </div>
     </div>
