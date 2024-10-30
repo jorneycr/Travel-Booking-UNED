@@ -1,0 +1,13 @@
+@model RutaBus
+<h2>Seleccionar Asiento para Ruta: @Model.Origen - @Model.Destino</h2>
+<form id="seatForm" method="post" action="/Reserva/ConfirmarReserva">
+    <input type="hidden" name="rutaId" value="@Model.Id" />
+    <label>Asiento:</label>
+    <select name="asientoId" required>
+        @foreach (var asiento in Model.Asientos.Where(a => a.Disponible))
+        {
+            <option value="@asiento.Id">@asiento.Numero</option>
+        }
+    </select>
+    <button type="submit">Reservar Asiento</button>
+</form>

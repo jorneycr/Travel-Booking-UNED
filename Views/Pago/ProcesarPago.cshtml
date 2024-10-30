@@ -1,0 +1,7 @@
+<h2>Procesar Pago</h2>
+<form id="paymentForm" method="post" action="/Pago/ProcesarPago">
+    <label>Número de Tarjeta: <input type="text" name="cardNumber" required maxlength="16" /></label><br />
+    <label>Fecha de Expiración: <input type="text" name="expiryDate" required placeholder="MM/AA" /></label><br />
+    <label>CVV: <input type="text" name="cvv" required maxlength="3" /></label><br />
+    <button type="submit">Pagar</button>
+</form>

@@ -1,0 +1,32 @@
+@model IEnumerable<Reserva>
+
+<h2>Historial de Reservas</h2>
+
+@if (!Model.Any())
+{
+    <p>No tienes reservas anteriores.</p>
+}
+else
+{
+    <table>
+        <thead>
+            <tr>
+                <th>Ruta</th>
+                <th>Fecha</th>
+                <th>Asiento</th>
+                <th>Estado del Pago</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var reserva in Model)
+            {
+                <tr>
+                    <td>@reserva.Ruta.Origen - @reserva.Ruta.Destino</td>
+                    <td>@reserva.FechaReserva.ToString("dd/MM/yyyy")</td>
+                    <td>@reserva.AsientoSeleccionado.Numero</td>
+                    <td>@reserva.EstadoPago</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

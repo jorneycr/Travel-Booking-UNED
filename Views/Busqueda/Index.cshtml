@@ -1,0 +1,10 @@
+@{
+    ViewBag.Title = "Buscar Ruta";
+}
+<h2>Buscar Ruta</h2>
+<form id="searchForm" method="post" action="/Busqueda/Resultados">
+    <label>Origen: <input type="text" name="origen" required /></label><br />
+    <label>Destino: <input type="text" name="destino" required /></label><br />
+    <label>Fecha: <input type="date" name="fecha" required /></label><br />
+    <button type="submit">Buscar</button>
+</form>

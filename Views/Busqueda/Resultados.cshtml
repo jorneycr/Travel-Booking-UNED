@@ -1,0 +1,38 @@
+@model List<RutaBus>
+@{
+    ViewBag.Title = "Resultados de Búsqueda";
+}
+<h2>Resultados de Búsqueda</h2>
+
+@if (Model.Any())
+{
+    <table>
+        <thead>
+            <tr>
+                <th>Origen</th>
+                <th>Destino</th>
+                <th>Fecha</th>
+                <th>Hora de Salida</th>
+                <th>Precio</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var ruta in Model)
+            {
+                <tr>
+                    <td>@ruta.Origen</td>
+                    <td>@ruta.Destino</td>
+                    <td>@ruta.Fecha.ToString("dd/MM/yyyy")</td>
+                    <td>@ruta.HoraSalida</td>
+                    <td>@ruta.Precio.ToString("C")</td>
+                    <td><a href="/Busqueda/Detalles?rutaId=@ruta.Id">Ver Detalles</a></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No se encontraron rutas para los criterios seleccionados.</p>
+}

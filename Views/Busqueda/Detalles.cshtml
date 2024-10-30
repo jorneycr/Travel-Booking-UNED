@@ -1,0 +1,30 @@
+@model RutaBus
+@{
+    ViewBag.Title = "Detalles de la Ruta";
+}
+<h2>Detalles de la Ruta</h2>
+
+<div>
+    <h3>@Model.Origen - @Model.Destino</h3>
+    <p>Fecha: @Model.Fecha.ToString("dd/MM/yyyy")</p>
+    <p>Hora de Salida: @Model.HoraSalida</p>
+    <p>Hora de Llegada: @Model.HoraLlegada</p>
+    <p>Precio: @Model.Precio.ToString("C")</p>
+    <p>Información del Autobús: @Model.BusInfo</p>
+</div>
+
+<h4>Disponibilidad de Asientos</h4>
+@if (Model.Asientos.Any())
+{
+    <ul>
+        @foreach (var asiento in Model.Asientos)
+        {
+            <li>Asiento @asiento.Numero - @asiento.Disponible</li>
+        }
+    </ul>
+}
+else
+{
+    <p>No hay asientos disponibles.</p>
+}
+<a href="/Reserva/Confirmar?rutaId=@Model.Id">Reservar esta Ruta</a>
