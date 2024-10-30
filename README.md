@@ -4,11 +4,33 @@ Este es un sistema de reservas de viajes en autobús, desarrollado con **ASP.NET
 
 ## Funcionalidades
 
-1. **Registro de Usuarios**: Los usuarios pueden registrarse en la plataforma proporcionando su nombre, apellido, email y contraseña.
-2. **Inicio de Sesión**: Los usuarios registrados pueden iniciar sesión con su correo electrónico y contraseña.
-3. **Reservas de Viajes**: Una vez autenticado, el usuario puede buscar rutas de autobús y realizar reservas.
-4. **Historial de Reservas**: Los usuarios pueden ver un historial de todas sus reservas pasadas.
-5. **Sistema de Roles**: Diferentes roles de usuario (como administrador y cliente) permiten gestionar la aplicación según permisos específicos.
+1. **Registro e Inicio de Sesión de Usuarios**: Los usuarios deben poder registrarse y autenticarse en el sistema. Validación de datos de entrada y manejo de errores.
+2. **Búsqueda de Rutas**: Permitir a los usuarios buscar rutas de buses por origen, destino, y fecha. Mostrar resultados de búsqueda relevantes y filtrables.
+3. **Selección de Asientos**: Los usuarios deben poder ver la disposición de asientos y seleccionar uno o más
+asientos disponibles.
+4. **Procesamiento de Pagos**: Integrar un sistema de pago simulado (puede ser una pasarela de pago ficticia). Confirmar pagos y generar un recibo o ticket digital.
+5. **Gestión de Reservas**: Los usuarios pueden ver su historial de reservas y detalles de las mismas. Implementar funcionalidad para cancelar reservas dentro de un tiempo
+determinado
+
+## Estructura del Proyecto
+
+- **Modelos**:
+  - **Rutas de Buses**: Información sobre buses, horarios, precios y destinos.
+  - **Usuarios**: Datos sobre usuarios registrados, historial de compras y datos personales.
+  - **Reservas**: Detalles de las reservas, incluyendo usuario, ruta, asiento seleccionado y estado del pago.
+
+- **Vistas**:
+  - **Página Principal**
+  - **Resultados de Búsqueda**
+  - **Detalles de Ruta**
+  - **Formulario de Reserva**
+  - **Confirmación de Reserva**
+
+- **Controladores**:
+  - **Controlador de Búsqueda**
+  - **Controlador de Reserva**
+  - **Controlador de Pago**
+  - **Controlador de Usuario**
 
 ## Tecnologías Utilizadas
 
