@@ -33,4 +33,8 @@ public class BusquedaController : Controller
 
         return View(ruta);
     }
+    public IActionResult Index()
+    {
+        return View();
+    }
 }

@@ -148,3 +148,4 @@ C:\Users\Jorne\Desktop\reservaDeViajes\obj\Debug\net8.0\refint\reservaDeViajes.d
 C:\Users\Jorne\Desktop\reservaDeViajes\obj\Debug\net8.0\reservaDeViajes.pdb
 C:\Users\Jorne\Desktop\reservaDeViajes\obj\Debug\net8.0\reservaDeViajes.genruntimeconfig.cache
 C:\Users\Jorne\Desktop\reservaDeViajes\obj\Debug\net8.0\ref\reservaDeViajes.dll
+C:\Users\Jorne\Desktop\reservaDeViajes\obj\Debug\net8.0\reservaDeViajes.sourcelink.json

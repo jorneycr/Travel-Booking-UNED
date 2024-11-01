@@ -17,6 +17,12 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
+// Seed data
+// using (var scope = app.Services.CreateScope())
+// {
+//     var context = scope.ServiceProvider.GetRequiredService<TravelContext>();
+//     TravelContext.SeedData(context);
+// }
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

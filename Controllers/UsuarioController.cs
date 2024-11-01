@@ -62,7 +62,7 @@ public class UsuarioController : Controller
         return View(model);
     }
 
-    [HttpPost]
+    [HttpGet]
     public async Task<IActionResult> Logout()
     {
         await _signInManager.SignOutAsync();

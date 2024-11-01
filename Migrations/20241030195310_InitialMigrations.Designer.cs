@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace reservaDeViajes.Migrations
 {
     [DbContext(typeof(TravelContext))]
-    [Migration("20241030023310_initial")]
-    partial class initial
+    [Migration("20241030195310_InitialMigrations")]
+    partial class InitialMigrations
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
