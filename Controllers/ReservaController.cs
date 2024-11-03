@@ -1,6 +1,6 @@
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 
 public class ReservaController : Controller
 {
@@ -13,77 +13,45 @@ public class ReservaController : Controller
         _userManager = userManager;
     }
 
-    private async Task<Usuario> ObtenerUsuarioActual()
-    {
-        var userId = _userManager.GetUserId(User);
-        return await _userManager.Users.Include(u => u.HistorialReservas).FirstOrDefaultAsync(u => u.Id == userId);
-    }
-
-    [HttpGet]
-    public IActionResult Detalles(int rutaId)
-    {
-        var ruta = _context.RutasBuses.Include(r => r.Asientos).FirstOrDefault(r => r.Id == rutaId);
-        if (ruta == null) return NotFound();
-
-        return View(ruta);
-    }
-
     [HttpPost]
-    public async Task<IActionResult> ConfirmarReservaAsync(int rutaId, int asientoId)
+    public async Task<IActionResult> Confirmar(int rutaId, List<string> asientosSeleccionados)
     {
-        var usuarioActual = await ObtenerUsuarioActual();
-        if (usuarioActual == null)
-            return Unauthorized();
-
-        var ruta = await _context.RutasBuses.FindAsync(rutaId);
-        var asiento = await _context.Asientos.FindAsync(asientoId);
-
-        if (ruta == null || asiento == null || !asiento.Disponible)
-            return BadRequest("Asiento no disponible.");
-
-        var reserva = new Reserva
+        if (asientosSeleccionados == null || !asientosSeleccionados.Any())
         {
-            Usuario = usuarioActual,
-            Ruta = ruta,
-            AsientoSeleccionado = asiento,
-            EstadoPago = "Pendiente",
-            FechaReserva = DateTime.Now
-        };
+            TempData["Error"] = "Debe seleccionar al menos un asiento.";
+            return RedirectToAction("Detalles", "Busqueda", new { rutaId = rutaId });
+        }
 
-        _context.Reservas.Add(reserva);
-        asiento.Disponible = false;
+        var userId = _userManager.GetUserId(User); // Obtener el ID del usuario autenticado
+        if (userId == null)
+        {
+            TempData["Error"] = "Debe iniciar sesión para hacer una reserva.";
+            return RedirectToAction("Login", "Usuario");
+        }
+
+        foreach (var numeroAsiento in asientosSeleccionados)
+        {
+            var asiento = await _context.Asientos.FirstOrDefaultAsync(a => a.Numero == numeroAsiento && a.Id == rutaId);
+
+            if (asiento != null && asiento.Disponible)
+            {
+                asiento.Disponible = false; // Marca el asiento como reservado
+
+                var reserva = new Reserva
+                {
+                    UsuarioId = userId, // Asigna el ID del usuario
+                    AsientoSeleccionado = asiento,
+                    Ruta = await _context.RutasBuses.FindAsync(rutaId),
+                    EstadoPago = "Pendiente",
+                    FechaReserva = DateTime.Now
+                };
+
+                _context.Reservas.Add(reserva);
+            }
+        }
+
         await _context.SaveChangesAsync();
-
-        return RedirectToAction("Confirmacion", new { reservaId = reserva.Id });
-    }
-
-    [HttpGet]
-    public IActionResult Confirmacion(int reservaId)
-    {
-        var reserva = _context.Reservas
-            .Include(r => r.Ruta)
-            .Include(r => r.AsientoSeleccionado)
-            .FirstOrDefault(r => r.Id == reservaId);
-
-        if (reserva == null) return NotFound();
-
-        return View(reserva);
-    }
-
-    [HttpPost]
-    public async Task<IActionResult> CancelarReserva(int reservaId)
-    {
-        var reserva = await _context.Reservas
-            .Include(r => r.AsientoSeleccionado)
-            .FirstOrDefaultAsync(r => r.Id == reservaId);
-
-        if (reserva == null || reserva.EstadoPago != "Pagado")
-            return BadRequest("Reserva no cancelable.");
-
-        reserva.EstadoPago = "Cancelado";
-        reserva.AsientoSeleccionado.Disponible = true;
-        await _context.SaveChangesAsync();
-
-        return RedirectToAction("Historial", "Usuario");
+        TempData["Success"] = "Reserva confirmada con éxito.";
+        return RedirectToAction("Index", "Home");
     }
 }

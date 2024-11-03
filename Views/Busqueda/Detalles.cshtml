@@ -4,6 +4,16 @@
 }
 <h2>Detalles de la Ruta</h2>
 
+<!-- Mostrar mensajes de éxito o error -->
+@if (TempData["Success"] != null)
+{
+    <p style="color: green;">@TempData["Success"]</p>
+}
+@if (TempData["Error"] != null)
+{
+    <p style="color: red;">@TempData["Error"]</p>
+}
+
 <div>
     <h3>@Model.Origen - @Model.Destino</h3>
     <p>Fecha: @Model.Fecha.ToString("dd/MM/yyyy")</p>
@@ -14,17 +24,29 @@
 </div>
 
 <h4>Disponibilidad de Asientos</h4>
-@if (Model.Asientos.Any())
-{
+<form id="seatSelectionForm" method="post" action="/Reserva/Confirmar">
+    <input type="hidden" name="rutaId" value="@Model.Id" />
     <ul>
         @foreach (var asiento in Model.Asientos)
         {
-            <li>Asiento @asiento.Numero - @asiento.Disponible</li>
+            <li>
+                <label>
+                    <input type="checkbox" name="asientosSeleccionados" value="@asiento.Numero" @(asiento.Disponible ? "" : "disabled") />
+                    Asiento @asiento.Numero - @(asiento.Disponible ? "Disponible" : "No disponible")
+                </label>
+            </li>
         }
     </ul>
-}
-else
-{
-    <p>No hay asientos disponibles.</p>
-}
-<a href="/Reserva/Confirmar?rutaId=@Model.Id">Reservar esta Ruta</a>
+    <button type="submit">Reservar Asientos Seleccionados</button>
+</form>
+
+<script>
+    document.getElementById('seatSelectionForm').addEventListener('submit', function(event) {
+        const selectedSeats = Array.from(document.querySelectorAll('input[name="asientosSeleccionados"]:checked'))
+                                   .map(checkbox => checkbox.value);
+        if (selectedSeats.length === 0) {
+            event.preventDefault();
+            alert("Por favor, selecciona al menos un asiento para reservar.");
+        }
+    });
+</script>
