@@ -36,12 +36,12 @@ namespace reservaDeViajes.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("RutaBusId")
+                    b.Property<int>("RutaId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("RutaBusId");
+                    b.HasIndex("RutaId");
 
                     b.ToTable("Asientos");
                 });
@@ -333,9 +333,13 @@ namespace reservaDeViajes.Migrations
 
             modelBuilder.Entity("Asiento", b =>
                 {
-                    b.HasOne("RutaBus", null)
+                    b.HasOne("RutaBus", "Ruta")
                         .WithMany("Asientos")
-                        .HasForeignKey("RutaBusId");
+                        .HasForeignKey("RutaId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("Ruta");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

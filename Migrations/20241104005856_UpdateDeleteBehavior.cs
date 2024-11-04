@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace reservaDeViajes.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialMigrations : Migration
+    public partial class UpdateDeleteBehavior : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -185,14 +185,14 @@ namespace reservaDeViajes.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Numero = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Disponible = table.Column<bool>(type: "bit", nullable: false),
-                    RutaBusId = table.Column<int>(type: "int", nullable: true)
+                    RutaId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Asientos", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Asientos_RutasBuses_RutaBusId",
-                        column: x => x.RutaBusId,
+                        name: "FK_Asientos_RutasBuses_RutaId",
+                        column: x => x.RutaId,
                         principalTable: "RutasBuses",
                         principalColumn: "Id");
                 });
@@ -233,9 +233,9 @@ namespace reservaDeViajes.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Asientos_RutaBusId",
+                name: "IX_Asientos_RutaId",
                 table: "Asientos",
-                column: "RutaBusId");
+                column: "RutaId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",

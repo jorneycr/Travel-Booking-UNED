@@ -12,7 +12,7 @@ public class TravelContext : IdentityDbContext<Usuario>
     public DbSet<Reserva> Reservas { get; set; }
     public DbSet<Asiento> Asientos { get; set; }
 
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
+   protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
 
@@ -20,25 +20,28 @@ public class TravelContext : IdentityDbContext<Usuario>
         modelBuilder.Entity<Reserva>()
             .HasOne(r => r.Usuario)
             .WithMany(u => u.HistorialReservas)
-            .IsRequired(); // Si la reserva siempre debe tener un usuario, puedes hacer que sea requerido.
+            .HasForeignKey(r => r.UsuarioId) // Especificar clave foránea
+            .IsRequired(); // Hace que el usuario sea obligatorio para una reserva
 
         // Configuración de la relación Reserva-RutaBus (Uno a Muchos)
         modelBuilder.Entity<Reserva>()
             .HasOne(r => r.Ruta)
-            .WithMany()
+            .WithMany() // Opcional: puedes agregar un ICollection<Reserva> en RutaBus si necesitas acceder a las reservas desde la ruta
+            .HasForeignKey(r => r.RutaId) // Clave externa en Reserva
             .IsRequired();
 
         // Configuración de la relación RutaBus-Asiento (Uno a Muchos)
         modelBuilder.Entity<Asiento>()
-            .HasOne<RutaBus>()
+            .HasOne(a => a.Ruta) // Relación hacia RutaBus
             .WithMany(r => r.Asientos)
-            .HasForeignKey("RutaBusId"); // Clave externa que representa la relación
+            .HasForeignKey(a => a.RutaId)
+            .OnDelete(DeleteBehavior.NoAction); // Clave externa en Asiento
 
         // Configuración de la relación Reserva-Asiento (Uno a Uno)
         modelBuilder.Entity<Reserva>()
             .HasOne(r => r.AsientoSeleccionado)
             .WithOne()
-            .HasForeignKey<Reserva>("AsientoSeleccionadoId");
+            .HasForeignKey<Reserva>(r => r.AsientoSeleccionadoId); // Clave externa en Reserva
 
         // Configuración de precisión para la propiedad Precio de RutaBus
         modelBuilder.Entity<RutaBus>()

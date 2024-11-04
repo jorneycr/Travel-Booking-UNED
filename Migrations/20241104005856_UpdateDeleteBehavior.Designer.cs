@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace reservaDeViajes.Migrations
 {
     [DbContext(typeof(TravelContext))]
-    [Migration("20241030195310_InitialMigrations")]
-    partial class InitialMigrations
+    [Migration("20241104005856_UpdateDeleteBehavior")]
+    partial class UpdateDeleteBehavior
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -39,12 +39,12 @@ namespace reservaDeViajes.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("RutaBusId")
+                    b.Property<int>("RutaId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("RutaBusId");
+                    b.HasIndex("RutaId");
 
                     b.ToTable("Asientos");
                 });
@@ -336,9 +336,13 @@ namespace reservaDeViajes.Migrations
 
             modelBuilder.Entity("Asiento", b =>
                 {
-                    b.HasOne("RutaBus", null)
+                    b.HasOne("RutaBus", "Ruta")
                         .WithMany("Asientos")
-                        .HasForeignKey("RutaBusId");
+                        .HasForeignKey("RutaId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("Ruta");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

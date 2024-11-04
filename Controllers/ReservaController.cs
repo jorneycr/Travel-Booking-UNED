@@ -13,45 +13,105 @@ public class ReservaController : Controller
         _userManager = userManager;
     }
 
-    [HttpPost]
-    public async Task<IActionResult> Confirmar(int rutaId, List<string> asientosSeleccionados)
+    public IActionResult Detalles(int rutaId)
     {
-        if (asientosSeleccionados == null || !asientosSeleccionados.Any())
+        var ruta = _context.RutasBuses
+            .Include(r => r.Asientos)
+            .FirstOrDefault(r => r.Id == rutaId);
+
+        if (ruta != null)
         {
-            TempData["Error"] = "Debe seleccionar al menos un asiento.";
-            return RedirectToAction("Detalles", "Busqueda", new { rutaId = rutaId });
+            // Filtra solo los asientos disponibles
+            ruta.Asientos = ruta.Asientos.Where(a => a.Disponible).ToList();
         }
 
-        var userId = _userManager.GetUserId(User); // Obtener el ID del usuario autenticado
-        if (userId == null)
-        {
-            TempData["Error"] = "Debe iniciar sesión para hacer una reserva.";
-            return RedirectToAction("Login", "Usuario");
-        }
-
-        foreach (var numeroAsiento in asientosSeleccionados)
-        {
-            var asiento = await _context.Asientos.FirstOrDefaultAsync(a => a.Numero == numeroAsiento && a.Id == rutaId);
-
-            if (asiento != null && asiento.Disponible)
-            {
-                asiento.Disponible = false; // Marca el asiento como reservado
-
-                var reserva = new Reserva
-                {
-                    UsuarioId = userId, // Asigna el ID del usuario
-                    AsientoSeleccionado = asiento,
-                    Ruta = await _context.RutasBuses.FindAsync(rutaId),
-                    EstadoPago = "Pendiente",
-                    FechaReserva = DateTime.Now
-                };
-
-                _context.Reservas.Add(reserva);
-            }
-        }
-
-        await _context.SaveChangesAsync();
-        TempData["Success"] = "Reserva confirmada con éxito.";
-        return RedirectToAction("Index", "Home");
+        return View(ruta);
     }
+
+    // [HttpPost]
+    // public async Task<IActionResult> Confirmar(int rutaId, List<string> asientosSeleccionados)
+    // {
+    //     if (asientosSeleccionados == null || !asientosSeleccionados.Any())
+    //     {
+    //         TempData["Error"] = "Debe seleccionar al menos un asiento.";
+    //         return RedirectToAction("Detalles", "Busqueda", new { rutaId = rutaId });
+    //     }
+
+    //     var userId = _userManager.GetUserId(User); // Obtener el ID del usuario autenticado
+    //     if (userId == null)
+    //     {
+    //         TempData["Error"] = "Debe iniciar sesión para hacer una reserva.";
+    //         return RedirectToAction("Login", "Usuario");
+    //     }
+
+    //     foreach (var numeroAsiento in asientosSeleccionados)
+    //     {
+    //         var asiento = await _context.Asientos.FirstOrDefaultAsync(a => a.Numero == numeroAsiento && a.Id == rutaId);
+
+    //         if (asiento != null && asiento.Disponible)
+    //         {
+    //             asiento.Disponible = false; // Marca el asiento como reservado
+
+    //             var reserva = new Reserva
+    //             {
+    //                 UsuarioId = userId, // Asigna el ID del usuario
+    //                 AsientoSeleccionado = asiento,
+    //                 Ruta = await _context.RutasBuses.FindAsync(rutaId),
+    //                 EstadoPago = "Pendiente",
+    //                 FechaReserva = DateTime.Now
+    //             };
+
+    //             _context.Reservas.Add(reserva);
+    //         }
+    //     }
+
+    //     await _context.SaveChangesAsync();
+    //     TempData["Success"] = "Reserva confirmada con éxito.";
+    //     return RedirectToAction("Index", "Home");
+    // }
+
+    [HttpPost]
+public async Task<IActionResult> Confirmar(int rutaId, List<string> asientosSeleccionados)
+{
+    if (asientosSeleccionados == null || !asientosSeleccionados.Any())
+    {
+        TempData["Error"] = "Debe seleccionar al menos un asiento.";
+        return RedirectToAction("Detalles", "Reserva", new { rutaId = rutaId });
+    }
+
+    var userId = _userManager.GetUserId(User);
+    if (userId == null)
+    {
+        TempData["Error"] = "Debe iniciar sesión para hacer una reserva.";
+        return RedirectToAction("Login", "Usuario");
+    }
+
+    foreach (var numeroAsiento in asientosSeleccionados)
+    {
+        var asiento = await _context.Asientos
+            .FirstOrDefaultAsync(a => a.Numero == numeroAsiento && a.RutaId == rutaId);
+
+        if (asiento != null && asiento.Disponible)
+        {
+            asiento.Disponible = false;
+
+            var reserva = new Reserva
+            {
+                UsuarioId = userId,
+                AsientoSeleccionadoId = asiento.Id,
+                RutaId = rutaId,
+                EstadoPago = "Pendiente",
+                FechaReserva = DateTime.Now
+            };
+
+            _context.Reservas.Add(reserva);
+            _context.Asientos.Update(asiento); // Actualiza el asiento como no disponible
+        }
+    }
+
+    await _context.SaveChangesAsync();
+    TempData["Success"] = "Reserva confirmada con éxito.";
+    return RedirectToAction("Index", "Home");
+}
+
 }
