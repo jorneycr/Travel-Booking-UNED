@@ -53,7 +53,19 @@ git clone https://github.com/jorneycr/Travel-Booking-UNED
 dotnet restore
 ```
 
-3. Ejecución del Proyecto
+3. Instalcion de SQL SERVER
+
+```js
+ Sql Server
+```
+
+3. Ajustas credenciales en el archivo de appsettings.json
+
+```js
+     "DefaultConnection": "Server=localhost;Database=TravelBooking;Trusted_Connection=True;TrustServerCertificate=True;"
+```
+
+5. Ejecución del Proyecto
 
 ```js
 dotnet run
@@ -61,10 +73,10 @@ dotnet run
 
 ## Migraciones de Base de Datos usando la CLI de .NET
 
-1. Crea una nueva migración
+1. Crea una nueva migración, si ya existen, ir al paso 2
 
 ```js
-dotnet ef migrations add NombreDeLaMigracion
+dotnet ef migrations add InitialMigration
 ```
 
 2. Aplica las migraciones
