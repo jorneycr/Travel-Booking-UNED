@@ -15,6 +15,7 @@ else
                 <th>Fecha</th>
                 <th>Asiento</th>
                 <th>Estado del Pago</th>
+                <th>Acciones</th>
             </tr>
         </thead>
         <tbody>
@@ -25,6 +26,11 @@ else
                     <td>@reserva.FechaReserva.ToString("dd/MM/yyyy")</td>
                     <td>@reserva.AsientoSeleccionado.Numero</td>
                     <td>@reserva.EstadoPago</td>
+                    <td>
+                        <form asp-action="CancelarReserva" asp-controller="Reserva" asp-route-reservaId="@reserva.Id" method="post" onsubmit="return confirm('¿Estás seguro de que deseas cancelar esta reserva?');">
+                            <button type="submit" class="btn btn-danger">Cancelar</button>
+                        </form>
+                    </td>
                 </tr>
             }
         </tbody>
