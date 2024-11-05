@@ -132,6 +132,7 @@ C:\Users\Jorne\Desktop\reservaDeViajes\obj\Debug\net8.0\reservaDeViajes.MvcAppli
 C:\Users\Jorne\Desktop\reservaDeViajes\obj\Debug\net8.0\reservaDeViajes.MvcApplicationPartsAssemblyInfo.cache
 C:\Users\Jorne\Desktop\reservaDeViajes\obj\Debug\net8.0\reservaDeViajes.RazorAssemblyInfo.cache
 C:\Users\Jorne\Desktop\reservaDeViajes\obj\Debug\net8.0\reservaDeViajes.RazorAssemblyInfo.cs
+C:\Users\Jorne\Desktop\reservaDeViajes\obj\Debug\net8.0\reservaDeViajes.sourcelink.json
 C:\Users\Jorne\Desktop\reservaDeViajes\obj\Debug\net8.0\staticwebassets.build.json
 C:\Users\Jorne\Desktop\reservaDeViajes\obj\Debug\net8.0\staticwebassets.development.json
 C:\Users\Jorne\Desktop\reservaDeViajes\obj\Debug\net8.0\staticwebassets\msbuild.reservaDeViajes.Microsoft.AspNetCore.StaticWebAssets.props
@@ -148,4 +149,3 @@ C:\Users\Jorne\Desktop\reservaDeViajes\obj\Debug\net8.0\refint\reservaDeViajes.d
 C:\Users\Jorne\Desktop\reservaDeViajes\obj\Debug\net8.0\reservaDeViajes.pdb
 C:\Users\Jorne\Desktop\reservaDeViajes\obj\Debug\net8.0\reservaDeViajes.genruntimeconfig.cache
 C:\Users\Jorne\Desktop\reservaDeViajes\obj\Debug\net8.0\ref\reservaDeViajes.dll
-C:\Users\Jorne\Desktop\reservaDeViajes\obj\Debug\net8.0\reservaDeViajes.sourcelink.json

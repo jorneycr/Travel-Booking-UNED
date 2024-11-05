@@ -28,7 +28,7 @@ else
                     <td>@reserva.EstadoPago</td>
                     <td>
                         <form asp-action="CancelarReserva" asp-controller="Reserva" asp-route-reservaId="@reserva.Id" method="post" onsubmit="return confirm('¿Estás seguro de que deseas cancelar esta reserva?');">
-                            <button type="submit" class="btn btn-danger">Cancelar</button>
+                            <button type="submit" class="btn btn-danger" @(reserva.PuedeCancelar ? "" : "disabled")>Cancelar</button>
                         </form>
                     </td>
                 </tr>

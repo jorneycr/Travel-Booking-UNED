@@ -9,4 +9,13 @@ public class Reserva
     public Asiento AsientoSeleccionado { get; set; }
     public string EstadoPago { get; set; }
     public DateTime FechaReserva { get; set; }
+    public bool PuedeCancelar
+    {
+        get
+        {
+            var fechaActual = DateTime.Now;
+            var fechaSalida = Ruta.Fecha.Date.Add(Ruta.HoraSalida);
+            return (fechaSalida - fechaActual).TotalHours >= 2;
+        }
+    }
 }

@@ -71,6 +71,12 @@ dotnet restore
 dotnet run
 ```
 
+6. Ejecución del Proyecto con watch
+
+```js
+dotnet watch run
+```
+
 ## Migraciones de Base de Datos usando la CLI de .NET
 
 1. Crea una nueva migración, si ya existen, ir al paso 2
