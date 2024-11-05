@@ -81,4 +81,53 @@ public class UsuarioController : Controller
 
         return View(reservas);
     }
+
+    [HttpGet]
+    public async Task<IActionResult> Perfil()
+    {
+        var userId = _userManager.GetUserId(User);
+        var usuario = await _userManager.Users
+            .Where(u => u.Id == userId)
+            .Select(u => new
+            {
+                u.Email,
+                u.Nombre,
+                u.Apellido,
+                u.PhoneNumber
+            })
+            .FirstOrDefaultAsync();
+
+        return View(usuario);
+    }
+
+
+    [HttpGet]
+    public IActionResult CambiarContrasena()
+    {
+        return View();
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> CambiarContrasena(CambiarContrasenaViewModel model)
+    {
+        if (ModelState.IsValid)
+        {
+            var user = await _userManager.GetUserAsync(User);
+            var result = await _userManager.ChangePasswordAsync(user, model.ContrasenaActual, model.NuevaContrasena);
+
+            if (result.Succeeded)
+            {
+                TempData["Mensaje"] = "Contraseña cambiada exitosamente.";
+                return RedirectToAction("Perfil");
+            }
+
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError("", error.Description);
+            }
+        }
+
+        return View(model);
+    }
+
 }

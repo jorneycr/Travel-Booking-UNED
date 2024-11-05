@@ -1,0 +1,10 @@
+@model dynamic
+
+<h2>Perfil de Usuario</h2>
+
+<p><strong>Email:</strong> @Model.Email</p>
+<p><strong>Nombre:</strong> @Model.Nombre</p>
+<p><strong>Apellido:</strong> @Model.Apellido</p>
+<p><strong>Teléfono:</strong> @Model.PhoneNumber</p>
+
+<a href="@Url.Action("CambiarContrasena", "Usuario")">Cambiar Contraseña</a>
