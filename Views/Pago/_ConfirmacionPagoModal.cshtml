@@ -1,0 +1,35 @@
+<!-- Modal de Confirmación de Pago -->
+<div class="modal fade" id="confirmacionPagoModal" tabindex="-1" role="dialog" aria-labelledby="confirmacionPagoLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmacionPagoLabel">Confirmación de Pago</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>¡Gracias por su pago! Aquí está su recibo:</p>
+                <p><strong>Recibo:</strong> @ViewBag.Recibo</p>
+                <p><strong>Fecha de Pago:</strong> @ViewBag.FechaPago</p>
+                <p><strong>Estado:</strong> @ViewBag.EstadoPago</p>
+                <p><strong>Usuario:</strong> @ViewBag.UsuarioNombre</p>
+                <p><strong>Email:</strong> @ViewBag.UsuarioEmail</p>
+                <p><strong>Ruta:</strong> @ViewBag.RutaNombre</p>
+                <p><strong>Asientos:</strong> @ViewBag.Asientos</p>
+                <button id="imprimirRecibo" class="btn btn-primary" onclick="window.print();">
+                    <i class="fa fa-print"></i> Imprimir Recibo
+                </button>
+            </div>
+            <div class="modal-footer">
+                <a href="/Usuario/Historial" class="btn btn-secondary">Volver al Historial de Reservas</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $('#confirmacionPagoModal').modal('show');
+    });
+</script>
