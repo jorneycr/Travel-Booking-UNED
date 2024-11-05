@@ -47,7 +47,8 @@ public class PagoController : Controller
                     TempData["Error"] = "Debe iniciar sesión para hacer una reserva.";
                     return RedirectToAction("Login", "Usuario");
                 }
-                // Cambia la lógica de comparación para trabajar con strings
+
+                string recibo = Guid.NewGuid().ToString(); // Generar recibo único
                 foreach (var asiento in ruta.Asientos.Where(a => asientos.Contains(a.Numero)))
                 {
                     asiento.Disponible = false;
@@ -56,19 +57,25 @@ public class PagoController : Controller
                         UsuarioId = userId,
                         AsientoSeleccionadoId = asiento.Id,
                         RutaId = rutaId,
-                        EstadoPago = "Pendiente",
+                        EstadoPago = "Pagado",
                         FechaReserva = DateTime.Now
                     };
                     _context.Reservas.Add(reserva);
                 }
 
                 _context.SaveChanges();
-                TempData["Success"] = "Pago realizado y asientos reservados exitosamente.";
-                return RedirectToAction("Historial", "Usuario");
+
+                // Pasar la información del recibo y fecha de pago a la vista
+                ViewBag.Recibo = recibo;
+                ViewBag.FechaPago = DateTime.Now.ToString("dd/MM/yyyy");
+                ViewBag.EstadoPago = "Pagado";
+
+                return View("ConfirmacionPago");
             }
         }
 
         TempData["Error"] = "Error en el procesamiento del pago. Inténtelo nuevamente.";
         return RedirectToAction("Detalles", new { rutaId });
     }
+
 }
