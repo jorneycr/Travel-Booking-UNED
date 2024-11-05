@@ -58,7 +58,7 @@ public class ReservaController : Controller
                     UsuarioId = userId,
                     AsientoSeleccionadoId = asiento.Id,
                     RutaId = rutaId,
-                    EstadoPago = "Pendiente",
+                    EstadoPago = "Pagado",
                     FechaReserva = DateTime.Now
                 };
 

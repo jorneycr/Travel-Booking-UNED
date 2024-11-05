@@ -24,14 +24,15 @@
 </div>
 
 <h4>Disponibilidad de Asientos</h4>
-<form id="seatSelectionForm" method="post" action="/Reserva/Confirmar">
+<form id="seatSelectionForm" method="post" action="/Pago/ProcesarPago">
     <input type="hidden" name="rutaId" value="@Model.Id" />
+    <input type="hidden" id="asientosSeleccionados" name="asientosSeleccionados" />
     <ul>
         @foreach (var asiento in Model.Asientos)
         {
             <li>
                 <label>
-                    <input type="checkbox" name="asientosSeleccionados" value="@asiento.Numero" @(asiento.Disponible ? "" : "disabled") />
+                    <input type="checkbox" class="asientoCheckbox" value="@asiento.Numero" @(asiento.Disponible ? "" : "disabled") />
                     Asiento @asiento.Numero - @(asiento.Disponible ? "Disponible" : "No disponible")
                 </label>
             </li>
@@ -42,11 +43,16 @@
 
 <script>
     document.getElementById('seatSelectionForm').addEventListener('submit', function(event) {
-        const selectedSeats = Array.from(document.querySelectorAll('input[name="asientosSeleccionados"]:checked'))
+        // Obtener asientos seleccionados
+        const selectedSeats = Array.from(document.querySelectorAll('.asientoCheckbox:checked'))
                                    .map(checkbox => checkbox.value);
+        
         if (selectedSeats.length === 0) {
             event.preventDefault();
             alert("Por favor, selecciona al menos un asiento para reservar.");
+        } else {
+            // Pasar asientos seleccionados al campo oculto
+            document.getElementById('asientosSeleccionados').value = selectedSeats.join(',');
         }
     });
 </script>
