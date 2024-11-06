@@ -6,6 +6,18 @@
 
 <div class="login-container">
     <h2>Iniciar Sesión</h2>
+    
+    <!-- Mostrar mensajes de error generales -->
+    @if (ViewData.ModelState.ErrorCount > 0)
+    {
+        <div class="alert alert-danger">
+            @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+            {
+                <p>@error.ErrorMessage</p>
+            }
+        </div>
+    }
+
     <form asp-action="Login" method="post">
         <div class="form-group">
             <label asp-for="Email"></label>

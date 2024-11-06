@@ -43,7 +43,9 @@ public class UsuarioController : Controller
                 return RedirectToAction("Index", "Home");
             }
             foreach (var error in result.Errors)
-                ModelState.AddModelError("", error.Description);
+            {
+                ModelState.AddModelError(string.Empty, error.Description);
+            }
         }
         return View(model);
     }
@@ -56,6 +58,17 @@ public class UsuarioController : Controller
     {
         if (ModelState.IsValid)
         {
+            // Busca al usuario por correo electrónico
+            var user = await _userManager.FindByEmailAsync(model.Email);
+
+            // Verifica si el usuario existe y si está bloqueado
+            if (user != null && user.LockoutEnabled)
+            {
+                ModelState.AddModelError("", "Tu cuenta está inactiva. Contacta al soporte para más información.");
+                return View(model);
+            }
+
+            // Intenta iniciar sesión si el usuario no está bloqueado
             var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, false, false);
 
             if (result.Succeeded)
@@ -217,7 +230,6 @@ public class UsuarioController : Controller
         if (usuario == null) return NotFound();
 
         usuario.LockoutEnabled = true;
-        usuario.LockoutEnd = DateTimeOffset.MaxValue; // Bloquear indefinidamente
 
         await _userManager.UpdateAsync(usuario);
         return RedirectToAction("ListarUsuarios");

@@ -6,6 +6,17 @@
 
 <div class="registro-container">
     <h2>Registro</h2>
+     <!-- Mostrar mensajes de error generales -->
+    @if (ViewData.ModelState.ErrorCount > 0)
+    {
+        <div class="alert alert-danger">
+            @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+            {
+                <p>@error.ErrorMessage</p>
+            }
+        </div>
+    }
+
     <form asp-action="Registro" method="post">
         <div class="form-group">
             <label asp-for="Nombre"></label>
