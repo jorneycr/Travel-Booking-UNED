@@ -1,3 +1,7 @@
+@{
+    ViewBag.Title = "Detalles";
+}
+
 <h2>Seleccionar Asiento para Ruta: @Model.Origen - @Model.Destino</h2>
 <form id="seatForm" method="post" action="/Reserva/Confirmar">
     <input type="hidden" name="rutaId" value="@Model.Id" />
