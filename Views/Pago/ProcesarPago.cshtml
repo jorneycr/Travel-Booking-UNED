@@ -5,10 +5,10 @@
 <h2>Procesar Pago</h2>
 
 <p>Estás a punto de reservar los siguientes asientos:</p>
-<ul>
+<ul class="paymentUl">
     @foreach (var asiento in ViewBag.AsientosSeleccionados as List<string>)
     {
-        <li>Asiento @asiento</li>
+        <li class="paymentLi">Asiento @asiento</li>
     }
 </ul>
 

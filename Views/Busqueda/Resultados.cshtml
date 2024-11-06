@@ -2,31 +2,33 @@
 @{
     ViewBag.Title = "Resultados de Búsqueda";
 }
-<h2>Resultados de Búsqueda</h2>
+<h2 class="resultados-titulo">Resultados de Búsqueda</h2>
 
 @if (Model.Any())
 {
-    <table>
+    <table class="resultados-tabla">
         <thead>
             <tr>
-                <th>Origen</th>
-                <th>Destino</th>
-                <th>Fecha</th>
-                <th>Hora de Salida</th>
-                <th>Precio</th>
-                <th>Acciones</th>
+                <th class="resultados-encabezado">Origen</th>
+                <th class="resultados-encabezado">Destino</th>
+                <th class="resultados-encabezado">Fecha</th>
+                <th class="resultados-encabezado">Hora de Salida</th>
+                <th class="resultados-encabezado">Precio</th>
+                <th class="resultados-encabezado">Acciones</th>
             </tr>
         </thead>
         <tbody>
             @foreach (var ruta in Model)
             {
-                <tr>
-                    <td>@ruta.Origen</td>
-                    <td>@ruta.Destino</td>
-                    <td>@ruta.Fecha.ToString("dd/MM/yyyy")</td>
-                    <td>@ruta.HoraSalida</td>
-                    <td>@ruta.Precio.ToString("C")</td>
-                    <td><a href="/Busqueda/Detalles?rutaId=@ruta.Id">Ver Detalles</a></td>
+                <tr class="resultados-fila">
+                    <td class="resultados-celda">@ruta.Origen</td>
+                    <td class="resultados-celda">@ruta.Destino</td>
+                    <td class="resultados-celda">@ruta.Fecha.ToString("dd/MM/yyyy")</td>
+                    <td class="resultados-celda">@ruta.HoraSalida</td>
+                    <td class="resultados-celda">@ruta.Precio.ToString("C")</td>
+                    <td class="resultados-celda">
+                        <a href="/Busqueda/Detalles?rutaId=@ruta.Id" class="resultados-enlace">Ver Detalles</a>
+                    </td>
                 </tr>
             }
         </tbody>
@@ -34,5 +36,5 @@
 }
 else
 {
-    <p>No se encontraron rutas para los criterios seleccionados.</p>
+    <p class="resultados-mensaje">No se encontraron rutas para los criterios seleccionados.</p>
 }
