@@ -1,30 +1,32 @@
 @model CambiarContrasenaViewModel
 
-<h2>Cambiar Contraseña</h2>
+<div class="cambiar-contrasena">
+    <h2>Cambiar Contraseña</h2>
 
-@if (TempData["Mensaje"] != null)
-{
-    <p>@TempData["Mensaje"]</p>
-}
+    @if (TempData["Mensaje"] != null)
+    {
+        <p class="mensaje">@TempData["Mensaje"]</p>
+    }
 
-<form asp-action="CambiarContrasena" method="post">
-    <div class="form-group">
-        <label for="ContrasenaActual">Contraseña Actual</label>
-        <input asp-for="ContrasenaActual" class="form-control" />
-        <span asp-validation-for="ContrasenaActual" class="text-danger"></span>
-    </div>
+    <form asp-action="CambiarContrasena" method="post">
+        <div class="form-group">
+            <label asp-for="ContrasenaActual"></label>
+            <input asp-for="ContrasenaActual" class="form-control" />
+            <span asp-validation-for="ContrasenaActual" class="text-danger"></span>
+        </div>
 
-    <div class="form-group">
-        <label for="NuevaContrasena">Nueva Contraseña</label>
-        <input asp-for="NuevaContrasena" class="form-control" />
-        <span asp-validation-for="NuevaContrasena" class="text-danger"></span>
-    </div>
+        <div class="form-group">
+            <label asp-for="NuevaContrasena"></label>
+            <input asp-for="NuevaContrasena" class="form-control" />
+            <span asp-validation-for="NuevaContrasena" class="text-danger"></span>
+        </div>
 
-    <div class="form-group">
-        <label for="ConfirmarContrasena">Confirmar Nueva Contraseña</label>
-        <input asp-for="ConfirmarContrasena" class="form-control" />
-        <span asp-validation-for="ConfirmarContrasena" class="text-danger"></span>
-    </div>
+        <div class="form-group">
+            <label asp-for="ConfirmarContrasena"></label>
+            <input asp-for="ConfirmarContrasena" class="form-control" />
+            <span asp-validation-for="ConfirmarContrasena" class="text-danger"></span>
+        </div>
 
-    <button type="submit" class="btn btn-primary">Cambiar Contraseña</button>
-</form>
+        <button type="submit" class="btn-primario">Cambiar Contraseña</button>
+    </form>
+</div>
