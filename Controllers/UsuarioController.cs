@@ -1,17 +1,20 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 
 public class UsuarioController : Controller
 {
     private readonly UserManager<Usuario> _userManager;
     private readonly SignInManager<Usuario> _signInManager;
+    private readonly RoleManager<IdentityRole> _roleManager; // Agrega RoleManager para gestionar roles
     private readonly TravelContext _context;
 
-    public UsuarioController(UserManager<Usuario> userManager, SignInManager<Usuario> signInManager, TravelContext context)
+    public UsuarioController(UserManager<Usuario> userManager, SignInManager<Usuario> signInManager, RoleManager<IdentityRole> roleManager, TravelContext context)
     {
         _userManager = userManager;
         _signInManager = signInManager;
+        _roleManager = roleManager; // Asigna RoleManager
         _context = context;
     }
 
@@ -35,6 +38,7 @@ public class UsuarioController : Controller
 
             if (result.Succeeded)
             {
+                await _userManager.AddToRoleAsync(user, "Usuario");
                 await _signInManager.SignInAsync(user, isPersistent: false);
                 return RedirectToAction("Index", "Home");
             }
@@ -130,4 +134,92 @@ public class UsuarioController : Controller
         return View(model);
     }
 
+    // Métodos exclusivos para Admin
+
+    [Authorize(Roles = "Admin")]
+    [HttpGet]
+    public async Task<IActionResult> ListarUsuarios()
+    {
+        var usuarios = await _userManager.Users.ToListAsync();
+        var usuariosConRoles = new List<UsuarioConRolesViewModel>();
+
+        foreach (var usuario in usuarios)
+        {
+            var roles = await _userManager.GetRolesAsync(usuario);
+            usuariosConRoles.Add(new UsuarioConRolesViewModel
+            {
+                Id = usuario.Id,
+                Nombre = usuario.Nombre,
+                Apellido = usuario.Apellido,
+                Email = usuario.Email,
+                Roles = roles
+            });
+        }
+
+        return View(usuariosConRoles);
+    }
+
+    [Authorize(Roles = "Admin")]
+    [HttpGet]
+    public async Task<IActionResult> EditarUsuario(string id)
+    {
+        var usuario = await _userManager.FindByIdAsync(id);
+        if (usuario == null) return NotFound();
+
+        var model = new EditarUsuarioViewModel
+        {
+            Id = usuario.Id,
+            Nombre = usuario.Nombre,
+            Apellido = usuario.Apellido,
+            Email = usuario.Email,
+            PhoneNumber = usuario.PhoneNumber,
+            Roles = await _userManager.GetRolesAsync(usuario)
+        };
+
+        ViewBag.AllRoles = await _roleManager.Roles.Select(r => r.Name).ToListAsync(); // Obtén todos los roles disponibles
+
+        return View(model);
+    }
+
+    [Authorize(Roles = "Admin")]
+    [HttpPost]
+    public async Task<IActionResult> EditarUsuario(EditarUsuarioViewModel model)
+    {
+        var usuario = await _userManager.FindByIdAsync(model.Id);
+        if (usuario == null) return NotFound();
+
+        usuario.Nombre = model.Nombre;
+        usuario.Apellido = model.Apellido;
+        usuario.Email = model.Email;
+        usuario.PhoneNumber = model.PhoneNumber;
+
+        var result = await _userManager.UpdateAsync(usuario);
+        if (!result.Succeeded)
+        {
+            foreach (var error in result.Errors)
+                ModelState.AddModelError("", error.Description);
+            return View(model);
+        }
+
+        // Actualiza roles
+        var userRoles = await _userManager.GetRolesAsync(usuario);
+        await _userManager.RemoveFromRolesAsync(usuario, userRoles); // Elimina roles actuales
+        await _userManager.AddToRolesAsync(usuario, model.SelectedRoles); // Asigna los nuevos roles seleccionados
+
+        return RedirectToAction("ListarUsuarios");
+    }
+
+    [Authorize(Roles = "Admin")]
+    [HttpPost]
+    public async Task<IActionResult> InactivarUsuario(string id)
+    {
+        var usuario = await _userManager.FindByIdAsync(id);
+        if (usuario == null) return NotFound();
+
+        usuario.LockoutEnabled = true;
+        usuario.LockoutEnd = DateTimeOffset.MaxValue; // Bloquear indefinidamente
+
+        await _userManager.UpdateAsync(usuario);
+        return RedirectToAction("ListarUsuarios");
+    }
 }

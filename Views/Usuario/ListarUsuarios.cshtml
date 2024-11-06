@@ -1,0 +1,34 @@
+@model List<UsuarioConRolesViewModel>
+
+<h2>Gestión de Usuarios</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Apellido</th>
+            <th>Email</th>
+            <th>Roles</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var usuario in Model)
+        {
+            <tr>
+                <td>@usuario.Nombre</td>
+                <td>@usuario.Apellido</td>
+                <td>@usuario.Email</td>
+                <td>@string.Join(", ", usuario.Roles)</td>
+                <td>
+                    <a asp-action="EditarUsuario" asp-route-id="@usuario.Id">Editar</a>
+                    <form asp-action="InactivarUsuario" asp-route-id="@usuario.Id" method="post" style="display:inline;">
+                        <button type="submit" onclick="return confirm('¿Estás seguro de que quieres inactivar este usuario?');">
+                            Inactivar
+                        </button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

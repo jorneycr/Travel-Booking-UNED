@@ -1,0 +1,35 @@
+@model EditarUsuarioViewModel
+
+<h2>Editar Usuario</h2>
+
+<form asp-action="EditarUsuario" method="post">
+    <input type="hidden" asp-for="Id" />
+    <div>
+        <label>Nombre</label>
+        <input asp-for="Nombre" />
+    </div>
+    <div>
+        <label>Apellido</label>
+        <input asp-for="Apellido" />
+    </div>
+    <div>
+        <label>Email</label>
+        <input asp-for="Email" />
+    </div>
+    <div>
+        <label>Teléfono</label>
+        <input asp-for="PhoneNumber" />
+    </div>
+    <div>
+        <label>Roles</label>
+        @foreach (var role in ViewBag.AllRoles)
+        {
+            <div>
+                <input type="checkbox" name="SelectedRoles" value="@role"
+                       @(Model.Roles.Contains(role) ? "checked" : "") />
+                <label>@role</label>
+            </div>
+        }
+    </div>
+    <button type="submit">Guardar Cambios</button>
+</form>

@@ -40,9 +40,15 @@
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Usuario" asp-action="Perfil">Perfil</a>
                             </li>
+                            @if (User.IsInRole("Admin"))
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Usuario" asp-action="ListarUsuarios">Administrar Usuarios</a>
+                                </li>
+                            }
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Usuario" asp-action="Logout">Cerrar Sesión (@User.Identity.Name)</a>
-                            </li>
+                            </li>                            
                         }
                         else
                         {

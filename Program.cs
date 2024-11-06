@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -6,21 +7,26 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<TravelContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-// Configura Identity
-builder.Services.AddDefaultIdentity<Usuario>()
-    .AddEntityFrameworkStores<TravelContext>();
+// Configura Identity con roles
+builder.Services.AddIdentity<Usuario, IdentityRole>()
+    .AddEntityFrameworkStores<TravelContext>()
+    .AddDefaultTokenProviders();
 
 // Configura servicios adicionales
 builder.Services.AddControllersWithViews();
 
-// Add services to the container.
-builder.Services.AddControllersWithViews();
-
 var app = builder.Build();
-// Seed data
+
+// Seed data e inicializar roles
 using (var scope = app.Services.CreateScope())
 {
-    var context = scope.ServiceProvider.GetRequiredService<TravelContext>();
+    var services = scope.ServiceProvider;
+
+    // Seed roles "Usuario" y "Admin"
+    TravelContext.SeedRolesAsync(services).Wait();
+
+    // Seed data adicional si es necesario
+    var context = services.GetRequiredService<TravelContext>();
     TravelContext.SeedData(context);
 }
 
@@ -28,7 +34,6 @@ using (var scope = app.Services.CreateScope())
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 
@@ -37,6 +42,7 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication(); // Asegúrate de agregar autenticación antes de la autorización
 app.UseAuthorization();
 
 app.MapControllerRoute(

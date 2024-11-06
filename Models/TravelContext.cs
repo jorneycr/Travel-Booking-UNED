@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 
 
 public class TravelContext : IdentityDbContext<Usuario>
@@ -156,40 +157,24 @@ public class TravelContext : IdentityDbContext<Usuario>
             context.SaveChanges(); // Guardar los cambios en la base de datos
         }
 
-        // if (!context.Users.Any())
-        // {
-        //     context.Users.AddRange(
-        //         new Usuario { UserName = "juan@example.com", Email = "juan@example.com", Nombre = "Juan", Apellido = "Pérez" },
-        //         new Usuario { UserName = "ana@example.com", Email = "ana@example.com", Nombre = "Ana", Apellido = "Gómez" }
-        //     );
-
-        //     context.SaveChanges(); // Guardar los cambios en la base de datos
-        // }
-
-        // if (!context.Reservas.Any())
-        // {
-        //     context.Reservas.AddRange(
-        //         new Reserva
-        //         {
-        //             Usuario = context.Users.FirstOrDefault(u => u.Email == "jorney@hotmail.com"),
-        //             Ruta = context.RutasBuses.FirstOrDefault(r => r.Origen == "Ciudad A" && r.Destino == "Ciudad B"),
-        //             AsientoSeleccionado = context.Asientos.FirstOrDefault(a => a.Numero == "1A"),
-        //             EstadoPago = "Confirmado",
-        //             FechaReserva = DateTime.Now
-        //         },
-        //         new Reserva
-        //         {
-        //             Usuario = context.Users.FirstOrDefault(u => u.Email == "jorney@hotmail.com"),
-        //             Ruta = context.RutasBuses.FirstOrDefault(r => r.Origen == "Ciudad B" && r.Destino == "Ciudad C"),
-        //             AsientoSeleccionado = context.Asientos.FirstOrDefault(a => a.Numero == "1B"),
-        //             EstadoPago = "Pendiente",
-        //             FechaReserva = DateTime.Now
-        //         }
-        //     );
-
-        //     context.SaveChanges(); // Guardar los cambios en la base de datos
-        // }
     }
+
+    public static async Task SeedRolesAsync(IServiceProvider serviceProvider)
+{
+    var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+
+    // Crear rol "Usuario" si no existe
+    if (!await roleManager.RoleExistsAsync("Usuario"))
+    {
+        await roleManager.CreateAsync(new IdentityRole("Usuario"));
+    }
+
+    // Crear rol "Admin" si no existe
+    if (!await roleManager.RoleExistsAsync("Admin"))
+    {
+        await roleManager.CreateAsync(new IdentityRole("Admin"));
+    }
+}
 
 }
 
