@@ -83,7 +83,7 @@ public IActionResult ConfirmarPago(int rutaId, string asientosSeleccionados, str
         }
     }
 
-    TempData["Error"] = "Error en el procesamiento del pago. Inténtelo nuevamente.";
+    //TempData["Error"] = "Error en el procesamiento del pago. Inténtelo nuevamente.";
     return RedirectToAction("Detalles", new { rutaId });
 }
 

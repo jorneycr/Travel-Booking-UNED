@@ -21,34 +21,67 @@ public class UsuarioController : Controller
     [HttpGet]
     public IActionResult Registro() => View();
 
+    // [HttpPost]
+    // public async Task<IActionResult> Registro(RegistroViewModel model)
+    // {
+    //     if (ModelState.IsValid)
+    //     {
+    //         var user = new Usuario
+    //         {
+    //             UserName = model.Email,
+    //             Email = model.Email,
+    //             Nombre = model.Nombre,
+    //             Apellido = model.Apellido
+    //         };
+
+    //         var result = await _userManager.CreateAsync(user, model.Password);
+
+    //         if (result.Succeeded)
+    //         {
+    //             await _userManager.AddToRoleAsync(user, "Usuario");
+    //             await _signInManager.SignInAsync(user, isPersistent: false);
+    //             return RedirectToAction("Index", "Home");
+    //         }
+    //         foreach (var error in result.Errors)
+    //         {
+    //             ModelState.AddModelError(string.Empty, error.Description);
+    //         }
+    //     }
+    //     return View(model);
+    // }
+
     [HttpPost]
-    public async Task<IActionResult> Registro(RegistroViewModel model)
+public async Task<IActionResult> Registro(RegistroViewModel model)
+{
+    if (ModelState.IsValid)
     {
-        if (ModelState.IsValid)
+        var user = new Usuario
         {
-            var user = new Usuario
-            {
-                UserName = model.Email,
-                Email = model.Email,
-                Nombre = model.Nombre,
-                Apellido = model.Apellido
-            };
+            UserName = model.Email,
+            Email = model.Email,
+            Nombre = model.Nombre,
+            Apellido = model.Apellido
+        };
 
-            var result = await _userManager.CreateAsync(user, model.Password);
+        var result = await _userManager.CreateAsync(user, model.Password);
 
-            if (result.Succeeded)
-            {
-                await _userManager.AddToRoleAsync(user, "Usuario");
-                await _signInManager.SignInAsync(user, isPersistent: false);
-                return RedirectToAction("Index", "Home");
-            }
-            foreach (var error in result.Errors)
-            {
-                ModelState.AddModelError(string.Empty, error.Description);
-            }
+        if (result.Succeeded)
+        {
+            // Se asigna el rol, pero no se inicia sesión automáticamente
+            await _userManager.AddToRoleAsync(user, "Usuario");
+
+            // Redirigir al inicio de sesión en lugar de al home
+            return RedirectToAction("Login", "Usuario");
         }
-        return View(model);
+
+        foreach (var error in result.Errors)
+        {
+            ModelState.AddModelError(string.Empty, error.Description);
+        }
     }
+    return View(model);
+}
+
 
     [HttpGet]
     public IActionResult Login() => View();
@@ -230,6 +263,19 @@ public class UsuarioController : Controller
         if (usuario == null) return NotFound();
 
         usuario.LockoutEnabled = true;
+
+        await _userManager.UpdateAsync(usuario);
+        return RedirectToAction("ListarUsuarios");
+    }
+
+    [Authorize(Roles = "Admin")]
+    [HttpPost]
+    public async Task<IActionResult> ActivarUsuario(string id)
+    {
+        var usuario = await _userManager.FindByIdAsync(id);
+        if (usuario == null) return NotFound();
+
+        usuario.LockoutEnabled = false;
 
         await _userManager.UpdateAsync(usuario);
         return RedirectToAction("ListarUsuarios");

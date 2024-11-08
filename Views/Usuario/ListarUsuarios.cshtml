@@ -26,6 +26,9 @@
                         <form asp-action="InactivarUsuario" asp-route-id="@usuario.Id" method="post" class="gestion-usuarios-action-form" onsubmit="return confirm('¿Estás seguro de que quieres inactivar este usuario?');">
                             <button type="submit" class="gestion-usuarios-action-button">Inactivar</button>
                         </form>
+                        <form asp-action="ActivarUsuario" asp-route-id="@usuario.Id" method="post" class="gestion-usuarios-action-form" onsubmit="return confirm('¿Estás seguro de que quieres activar este usuario?');">
+                            <button type="submit" class="gestion-usuarios-action-button-activar">Activar</button>
+                        </form>
                     </td>
                 </tr>
             }
@@ -91,6 +94,20 @@
 .gestion-usuarios-action-form {
     display: inline;
 }
+.gestion-usuarios-action-button-activar {
+    padding: 8px 12px;
+    font-size: 14px;
+    color: #fff;
+    background-color: rgb(16, 168, 16);
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.gestion-usuarios-action-button-activar:hover {
+    background-color: rgb(104, 143, 42);
+}
 
 .gestion-usuarios-action-button {
     padding: 8px 12px;
@@ -104,7 +121,7 @@
 }
 
 .gestion-usuarios-action-button:hover {
-    background-color: #c82333;
+    background-color: #e41026;
 }
 
 .gestion-usuarios-action-button:focus {
