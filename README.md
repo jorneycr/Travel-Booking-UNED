@@ -1,91 +1,104 @@
-# Sistema de Reservas de Viajes
+# Travel Booking System
 
-Este es un sistema de reservas de viajes en autobús, desarrollado con **ASP.NET Core MVC** y **Entity Framework Core**. La aplicación permite a los usuarios registrarse, iniciar sesión y gestionar sus reservas de viajes. También incluye un sistema de autenticación basado en **ASP.NET Identity**.
+This is a bus travel booking system, developed with ASP.NET Core MVC and Entity Framework Core. The application allows users to register, log in, and manage their travel bookings. It also includes an authentication system based on ASP.NET Identity.
 
-## Funcionalidades
+## Features
+User Registration and Login: Users must be able to register and authenticate in the system. Input data validation and error handling.
 
-1. **Registro e Inicio de Sesión de Usuarios**: Los usuarios deben poder registrarse y autenticarse en el sistema. Validación de datos de entrada y manejo de errores.
-2. **Búsqueda de Rutas**: Permitir a los usuarios buscar rutas de buses por origen, destino, y fecha. Mostrar resultados de búsqueda relevantes y filtrables.
-3. **Selección de Asientos**: Los usuarios deben poder ver la disposición de asientos y seleccionar uno o más
-asientos disponibles.
-4. **Procesamiento de Pagos**: Integrar un sistema de pago simulado (puede ser una pasarela de pago ficticia). Confirmar pagos y generar un recibo o ticket digital.
-5. **Gestión de Reservas**: Los usuarios pueden ver su historial de reservas y detalles de las mismas. Implementar funcionalidad para cancelar reservas dentro de un tiempo
-determinado
+Route Search: Allow users to search for bus routes by origin, destination, and date. Display relevant and filterable search results.
 
-## Estructura del Proyecto
+Seat Selection: Users must be able to view the seat layout and select one or more available seats.
 
-- **Modelos**:
-  - **Rutas de Buses**: Información sobre buses, horarios, precios y destinos.
-  - **Usuarios**: Datos sobre usuarios registrados, historial de compras y datos personales.
-  - **Reservas**: Detalles de las reservas, incluyendo usuario, ruta, asiento seleccionado y estado del pago.
+Payment Processing: Integrate a simulated payment system (it can be a fictitious payment gateway). Confirm payments and generate a digital receipt or ticket.
 
-- **Vistas**:
-  - **Página Principal**
-  - **Resultados de Búsqueda**
-  - **Detalles de Ruta**
-  - **Formulario de Reserva**
-  - **Confirmación de Reserva**
+Booking Management: Users can view their booking history and details. Implement functionality to cancel bookings within a specified time.
 
-- **Controladores**:
-  - **Controlador de Búsqueda**
-  - **Controlador de Reserva**
-  - **Controlador de Pago**
-  - **Controlador de Usuario**
+## Project Structure
 
-## Tecnologías Utilizadas
+- **Models**:
+Bus Routes: Information about buses, schedules, prices, and destinations.
 
-- **ASP.NET Core MVC**: Framework principal de la aplicación.
-- **Entity Framework Core**: ORM utilizado para interactuar con la base de datos SQL Server.
-- **ASP.NET Identity**: Para manejar la autenticación y el registro de usuarios.
-- **SQL Server**: Base de datos relacional para almacenar usuarios, rutas y reservas.
+Users: Data on registered users, purchase history, and personal information.
 
-## Instalación
+Bookings: Booking details, including user, route, selected seat, and payment status.
 
-1. Clona el repositorio:
+- **Views**:
+Home Page
+
+Search Results
+
+Route Details
+
+Booking Form
+
+Booking Confirmation
+
+- **Controllers**:
+Search Controller
+
+Booking Controller
+
+Payment Controller
+
+User Controller
+
+## Technologies Used
+
+ASP.NET Core MVC: Main framework of the application.
+
+Entity Framework Core: ORM used to interact with the SQL Server database.
+
+ASP.NET Identity: To manage authentication and user registration.
+
+SQL Server: Relational database to store users, routes, and bookings.
+
+## Installation
+
+1. Clone the repository:
 
 ```js
 git clone https://github.com/jorneycr/Travel-Booking-UNED
 ```
 
-2. Restaura las dependencias
+2. Restore dependencies
 
 ```js
 dotnet restore
 ```
 
-3. Instalcion de SQL SERVER
+3. SQL SERVER Installation
 
 ```js
  Sql Server
 ```
 
-3. Ajustas credenciales en el archivo de appsettings.json
+3. Adjust credentials in the appsettings.json file
 
 ```js
      "DefaultConnection": "Server=localhost;Database=TravelBooking;Trusted_Connection=True;TrustServerCertificate=True;"
 ```
 
-5. Ejecución del Proyecto
+5. Run the Project
 
 ```js
 dotnet run
 ```
 
-6. Ejecución del Proyecto con watch
+6. Run the Project with watch
 
 ```js
 dotnet watch run
 ```
 
-## Migraciones de Base de Datos usando la CLI de .NET
+## Database Migrations using the .NET CLI
 
-1. Crea una nueva migración, si ya existen, ir al paso 2
+1. Create a new migration; if one already exists, go to step 2
 
 ```js
 dotnet ef migrations add InitialMigration
 ```
 
-2. Aplica las migraciones
+2. Apply the migrations
 
 ```js
 dotnet ef database update
